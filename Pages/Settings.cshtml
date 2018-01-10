@@ -16,38 +16,38 @@
 
 <form method="post" autocomplete="on" class="container" novalidate>
     <div class="row">
-        <div class="col-lg-2">Użyj DHCP: </div>
-        <div class="col-lg-offset-2">
-            <input type="checkbox" id="DHCP"  asp-for="Data.UseDHCP" name="Użyj DHCP" autofocus>
+        <div class="col-xs-2">Użyj DHCP: </div>
+        <div class="col-xs-offset-2">
+            <input type="checkbox" id="DHCP"  asp-for="Data.UseDHCP"  autofocus>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-lg-2">IP: </div>
-        <div class="col-lg-offset-2">
-            <input type="text" asp-for="Data.IP" name="ip" class="chk" placeholder="Wprowadź adres ip." autofocus>
+        <div class="col-xs-2">IP: </div>
+        <div class="col-xs-offset-2">
+            <input type="text" asp-for="Data.IP"  class="chk" placeholder="Wprowadź adres ip." autofocus>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-2">Maksa: </div>
-        <div class="col-lg-offset-2">
-            <input type="text" asp-for="Data.Mask" name="Mask" class="chk" placeholder="Wprowadź maskę sieci.">
+        <div class="col-xs-2">Maska: </div>
+        <div class="col-xs-offset-2">
+            <input type="text" asp-for="Data.Mask"  class="chk" placeholder="Wprowadź maskę sieci.">
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-2">Brama domyślna: </div>
-        <div class="col-lg-offset-2">
-            <input type="text" asp-for="Data.Gate" name="Gate" class="chk" placeholder="Wprowadź adres bramy.">
+        <div class="col-xs-2">Brama domyślna: </div>
+        <div class="col-xs-offset-2">
+            <input type="text" asp-for="Data.Gate"  class="chk" placeholder="Wprowadź adres bramy.">
         </div>
     </div>
     <div>
-        <input type="submit" style="margin-top:15px" class="btn btn-primary col-sm-offset-3" value="  Zapisz  ">
+        <input type="submit" style="margin-top:15px" class="btn btn-primary col-xs-offset-3" value="  Zapisz  ">
     </div>
 
 
 
-    @*<input type="text" class="col-md-5" name="firstname" placeholder="Enter first name." autofocus>
-        <input type="text" class="col-md-offset-2" name="lastname" placeholder="Enter last name.">
+    @*<input type="text" class="col-md-5" "firstname" placeholder="Enter first name." autofocus>
+        <input type="text" class="col-md-offset-2" "lastname" placeholder="Enter last name.">
         <br />
         <input type="submit" class="btn btn-primary col-md-offset-3" style="margin-top:10px;" value="Submit Your Data">*@
 </form>

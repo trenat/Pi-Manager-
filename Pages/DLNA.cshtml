@@ -5,11 +5,75 @@
 
 <h2>Ustawienia serwera DLNA</h2>
 
+<h3>Dane serwera</h3>
+<div class="row">
+    <div class="col-lg-2">Plików wideo: </div>
+    <div class="col-lg-offset-2">@Model.Data.VideoCount </div>
+</div>
 
-<form method="post" autocomplete="on" class="container" novalidate>
+<div class="row">
+    <div class="col-lg-2">Plików audio: </div>
+    <div class="col-lg-offset-2">@Model.Data.AudioCount </div>
+</div>
 
-    <div>
-        <input type="button" id="something" style="margin-top:15px" class="btn btn-primary col-sm-offset-3" value="  Zapisz  ">
+<div class="row">
+    <div class="col-lg-2">Zdjęć: </div>
+    <div class="col-lg-offset-2">@Model.Data.PhotosCount </div>
+</div>
+
+<div style="margin-top:3%;">
+    <ul class="row">
+        <li>
+            <div class="col-lg-2"> Ściezki wideo: </div><br />
+            <ul>
+                <li>
+                    @Model.Data.PhotosCount
+                </li>
+                <li>
+                    @Model.Data.PhotosCount
+                </li>
+                <li>
+                    @Model.Data.PhotosCount
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <div class="col-lg-2">Ściezki audio: </div><br />
+            <ul>
+                <li>
+                    @Model.Data.PhotosCount
+                </li>
+                <li>
+                    @Model.Data.PhotosCount
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <div class="col-lg-2">Ściezki do zdjęć: </div><br />
+            <ul>
+                <li>
+                    @Model.Data.PhotosCount
+                </li>
+                <li>
+                    @Model.Data.PhotosCount
+                </li>
+                <li>
+                    @Model.Data.PhotosCount
+                </li>
+                <li>
+                    @Model.Data.PhotosCount
+                </li>
+            </ul>
+        </li>
+    </ul>
+
     </div>
+    <form method="post" autocomplete="on" class="container" novalidate>
 
-</form>
+        <div>
+            <input type="button" id="something" style="margin-top:15px" class="btn btn-primary col-sm-offset-3" value="  Zapisz  ">
+        </div>
+
+    </form>
