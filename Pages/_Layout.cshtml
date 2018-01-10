@@ -50,6 +50,16 @@
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script type="text/javascript" asp-append-version="true">
+            $('#DHCP').click(function () {
+
+                $(".chk").attr('disabled', this.checked)
+            });
+            $(function () {
+
+                $(".chk").attr('disabled', this.checked)
+            });
+        </script>
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -66,15 +76,7 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
 
-        <script type="text/javascript">
-            $('#test').click(function () {
-                var checked = this.checked;
-                console.log(checked);
-                $('.prueba').each(function () {
-                    $(this).prop('disabled', !checked);
-                });
-            });
-        </script>
+
     </environment>
 
     @RenderSection("Scripts", required: false)

@@ -3,22 +3,22 @@
 @{
 }
 
-<script type="text/javascript">
+@*<script type="text/javascript">
     $('#DHCP').click(function () {
         var checked = this.checked;
         console.log(checked);
         $('.chk').each(function () {
-            $(this).prop('disabled', !checked);
+            $(this).prop('disabled', checked);
         });
     });
-</script>
+</script>*@
 <h2>Ustawienia Raspberry Pi</h2>
 
 <form method="post" autocomplete="on" class="container" novalidate>
     <div class="row">
-        <div class="col-lg-2">IP: </div>
+        <div class="col-lg-2">Użyj DHCP: </div>
         <div class="col-lg-offset-2">
-            <input type="checkbox" id="DHCP"  asp-for="Data.UseDHCP" name="ip" autofocus>
+            <input type="checkbox" id="DHCP"  asp-for="Data.UseDHCP" name="Użyj DHCP" autofocus>
         </div>
     </div>
 
