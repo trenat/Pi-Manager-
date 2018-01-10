@@ -1,0 +1,53 @@
+﻿@page
+@model SettingsModel
+@{
+}
+
+<script type="text/javascript">
+    $('#DHCP').click(function () {
+        var checked = this.checked;
+        console.log(checked);
+        $('.chk').each(function () {
+            $(this).prop('disabled', !checked);
+        });
+    });
+</script>
+<h2>Ustawienia Raspberry Pi</h2>
+
+<form method="post" autocomplete="on" class="container" novalidate>
+    <div class="row">
+        <div class="col-lg-2">IP: </div>
+        <div class="col-lg-offset-2">
+            <input type="checkbox" id="DHCP"  asp-for="Data.UseDHCP" name="ip" autofocus>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-2">IP: </div>
+        <div class="col-lg-offset-2">
+            <input type="text" asp-for="Data.IP" name="ip" class="chk" placeholder="Wprowadź adres ip." autofocus>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">Maksa: </div>
+        <div class="col-lg-offset-2">
+            <input type="text" asp-for="Data.Mask" name="Mask" class="chk" placeholder="Wprowadź maskę sieci.">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">Brama domyślna: </div>
+        <div class="col-lg-offset-2">
+            <input type="text" asp-for="Data.Gate" name="Gate" class="chk" placeholder="Wprowadź adres bramy.">
+        </div>
+    </div>
+    <div>
+        <input type="submit" style="margin-top:15px" class="btn btn-primary col-sm-offset-3" value="  Zapisz  ">
+    </div>
+
+
+
+    @*<input type="text" class="col-md-5" name="firstname" placeholder="Enter first name." autofocus>
+        <input type="text" class="col-md-offset-2" name="lastname" placeholder="Enter last name.">
+        <br />
+        <input type="submit" class="btn btn-primary col-md-offset-3" style="margin-top:10px;" value="Submit Your Data">*@
+</form>
