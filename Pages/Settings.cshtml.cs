@@ -13,16 +13,15 @@ namespace PiManagment.Pages
     {
         public void OnGet()
         {
+            int group = 0;
 
             var output = "ipconfig".Bash();
             var lines = output.Split("\r\n");
-            int group = 0;
             var cards = lines.Select(x => ((!x.StartsWith(" ") && x != "")? ++group : group, x))
                               .Where(b => b.x != "")
                               .GroupBy(v => v.Item1)
-                              //.Where(z => z.Count() > 3)
                               .ToList();
-            var lanCard = cards.FirstOrDefault(y => y.First().x.Contains("LAN"));
+            var lanCard = cards.FirstOrDefault(y => y.First().x.Contains("Wi-Fi"));
             var lanCardData = lanCard.Select(x => x.x.Split(":"));
             var IP = lanCardData.First(x => x[0].Contains("IPv4"))[1];
             var Mask = lanCardData.First(x => x[0].Contains("Mask"))[1];
