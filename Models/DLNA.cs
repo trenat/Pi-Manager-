@@ -11,8 +11,8 @@ namespace PiManagment.Models
         public int VideoCount { set; get; }
         public int PhotosCount { set; get; }
 
-        public List<(int, string)> AudioPaths { set; get; }
-        public List<(int, string)> VideoPaths { set; get; }
-        public List<(int,string)> PhotosPaths { set; get; }
+        public List<Pair> AudioPaths { set; get; }
+        public List<Pair> VideoPaths { set; get; }
+        public List<Pair> PhotosPaths { set; get; }
     }
 }

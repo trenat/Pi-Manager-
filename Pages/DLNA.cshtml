@@ -21,59 +21,122 @@
     <div class="col-xs-offset-2">@Model.Data.PhotosCount </div>
 </div>
 
-<div style="margin-top:3%;">
-    <ul class="row">
-        <li>
-            <div class="col-xs-8"> Ściezki wideo: </div><br />
-            <ul>
-                @for (int i = 0; i < Model.Data.VideoPaths.Count(); i++)
-                {
-                <li>
-                    <div >
-                        @Html.DisplayFor(x => Model.Data.VideoPaths[i].Item2)
-
-                    </div>
-                </li>
-                }
-            </ul>
-        </li>
-
-        <li>
-            <div class="col-xs-8">Ściezki audio: </div><br />
-            <ul>
-                @for (int i = 0; i < Model.Data.AudioPaths.Count(); i++)
-                {
-                    <li>
-                        @Html.DisplayFor(x => Model.Data.AudioPaths[i].Item2)
-                    </li>
-                }
-            </ul>
-        </li>
-
-        <li>
-            <div class="col-xs-8">Ściezki do zdjęć: </div><br />
-            <ul>
-                @for (int i = 0; i < Model.Data.PhotosPaths.Count(); i++)
-                {
-                    <li>
-                        @Html.DisplayFor(x => Model.Data.PhotosPaths[i].Item2)
-                    </li>
-                }
-            </ul>
-        </li>
-    </ul>
-
-</div>
 <form method="post" autocomplete="on" class="container" novalidate>
+    <div style="margin-top:3%;">
+        <ul class="row">
+            <li>
+                <div class="col-xs-8"> Ściezki wideo: </div><br />
+                <ul>
+                    @for (int i = 0; i < Model.Data.VideoPaths.Count() - 1; i++)
+                    {
+                        <li>
+                            <div>
+                                @Html.DisplayFor(x =>  x.Data.VideoPaths[i].Value)
+                                @Html.HiddenFor(x =>  x.Data.VideoPaths[i].ID)
+                                <button type="submit" asp-page-handler="VDelete" style="margin: 2px; margin-left: 5%" asp-route-id="@Model.Data.VideoPaths[i].ID" class="btn btn-xs btn-danger">
+                                    <span class="glyphicon glyphicon-trash"></span>&nbsp;
+                                </button>
+
+                            </div>
+                        </li>
+                    }
+                    <li>
+                        <div>
+                            <span style="height: 25px; width: 8%;  padding-top:2px" placeholder="Path">
+                                @Html.TextBoxFor(x =>  x.Data.VideoPaths[Model.Data.VideoPaths.Count() - 1].Value)
+                                @Html.HiddenFor(x =>  x.Data.VideoPaths[Model.Data.VideoPaths.Count() - 1].ID)
+                            </span>
+                            <input type="submit" asp-page-handler="AddV" class="btn btn-primary" style="margin-top:2px; margin-left: 1%; height: 25px; padding-top:2px" value="dodaj" />
+
+                        </div>
+                    </li>
+                </ul>
+                <br />
+            </li>
+
+            <li>
+                <div class="col-xs-2">Ściezki audio: </div><br />
+                <ul>
+                    @for (int i = 0; i < Model.Data.AudioPaths.Count() - 1; i++)
+                    {
+                        <li>
+                            @Html.DisplayFor(x =>  x.Data.AudioPaths[i].Value)
+                            @Html.HiddenFor(x =>  x.Data.AudioPaths[i].ID)
+
+                            <button type="submit" asp-page-handler="ADelete" style="margin: 2px; margin-left: 5%" asp-route-id="@Model.Data.AudioPaths[i].ID" class="btn btn-xs btn-danger">
+                                <span class="glyphicon glyphicon-trash"></span>&nbsp;
+                            </button>
+                        </li>
+                    }
+                    <li>
+                        <div>
+                            <span style="height: 25px; width: 8%;  padding-top:2px" placeholder="Path">
+                                @Html.TextBoxFor(x =>  x.Data.AudioPaths[Model.Data.AudioPaths.Count() - 1].Value)
+                                @Html.HiddenFor(x =>  x.Data.AudioPaths[Model.Data.AudioPaths.Count() - 1].ID)
+                            </span>
+                            <input type="submit" asp-page-handler="AddA" class="btn btn-primary" style="margin-top:2px; margin-left: 1%; height: 25px; padding-top:2px" value="dodaj" />
+
+                        </div>
+                    </li>
+                </ul>
+                <br />
+            </li>
+
+            <li>
+                <div class="col-xs-8">Ściezki do zdjęć: </div><br />
+                <ul>
+                    @for (int i = 0; i < Model.Data.PhotosPaths.Count() - 1; i++)
+                    {
+                        <li>
+                            @Html.DisplayFor(x => Model.Data.PhotosPaths[i].Value)
+                            @Html.HiddenFor(x => Model.Data.PhotosPaths[i].ID)
+
+                            <button type="submit" asp-page-handler="PDelete" style="margin: 2px; margin-left: 5%" asp-route-id="@Model.Data.PhotosPaths[i].ID" class="btn btn-xs btn-danger">
+                                <span class="glyphicon glyphicon-trash"></span>&nbsp;
+                            </button>
+                        </li>
+                    }
+                    <li>
+                        <div>
+                            <span style="height: 25px; width: 8%;  padding-top:2px" placeholder="Path">
+                                @Html.TextBoxFor(x =>  Model.Data.PhotosPaths[Model.Data.PhotosPaths.Count() - 1].Value)
+                                @Html.HiddenFor(x => Model.Data.PhotosPaths[Model.Data.PhotosPaths.Count() - 1].ID)
+                            </span>
+                            <input type="submit" asp-page-handler="AddP" class="btn btn-primary" style="margin-top:2px; margin-left: 1%; height: 25px; padding-top:2px" value="dodaj" />
+
+                        </div>
+                        <br />
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
     @Html.HiddenFor(x => x.Data.AudioCount)
     @Html.HiddenFor(x => x.Data.VideoCount)
     @Html.HiddenFor(x => x.Data.PhotosCount)
 
-    @Html.HiddenFor(x => x.Data.AudioPaths)
-    @Html.HiddenFor(x => x.Data.VideoPaths)
-    @Html.HiddenFor(x => x.Data.PhotosPaths)
-    <div>
-        <input type="submit" id="something" style="margin-top:15px" class="btn btn-primary col-sm-offset-3" value="  Zapisz  ">
+
+    @for (int i = 0; i < Model.Data.AudioPaths.Count; i++)
+    {
+        @Html.HiddenFor(x =>  x.Data.AudioPaths[i].ID)
+        @Html.HiddenFor(x =>  x.Data.AudioPaths[i].Value)
+
+    }
+    @for (int i = 0; i < Model.Data.PhotosPaths.Count; i++)
+    {
+        @Html.HiddenFor(x =>  x.Data.PhotosPaths[i].ID)
+        @Html.HiddenFor(x =>  x.Data.PhotosPaths[i].Value)
+
+    }
+    @for (int i = 0; i < Model.Data.VideoPaths.Count; i++)
+    {
+        @Html.HiddenFor(x =>  x.Data.VideoPaths[i].ID)
+        @Html.HiddenFor(x =>  x.Data.VideoPaths[i].Value)
+
+    }
+    <div class="container">
+        <input type="submit" id="something" asp-page-handler="SaveDLNAConf" style="margin-top:15px" class="btn btn-primary col-sm-offset-3" value="  Zapisz  ">
     </div>
 
 </form>
