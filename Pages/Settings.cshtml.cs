@@ -15,6 +15,8 @@ namespace PiManagment.Pages
         {
             int group = 0;
 
+            //var output = "cat /etc/dhcpcd.conf"
+
             var output = "ipconfig".Bash();
             var lines = output.Split("\r\n");
             var cards = lines.Select(x => ((!x.StartsWith(" ") && x != "")? ++group : group, x))
@@ -48,12 +50,8 @@ namespace PiManagment.Pages
 
 
             //ifconfig eth0 0.0.0.0 0.0.0.0 && dhclient
-
-
-            //killall dhclient && ifconfig eth0 10.0.1.22 netmask 255.255.255.0
-
-
-            //$"sudo ifconfig wlan0 {Data.IP} netmask {Data.Mask}".Bash();
+            // sudo ifconfig eth0 10.0.1.22 netmask 255.255.255.0
+            //$"sudo killall dhclient && sudo ifconfig wlan0 {Data.IP} netmask {Data.Mask}".Bash();
             //$"sudo route add default gw {Data.Gate} eth0".Bash();
 
 
