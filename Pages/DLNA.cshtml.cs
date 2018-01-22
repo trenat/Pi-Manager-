@@ -7,11 +7,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using PiManagment.Models;
 using PiManagment.Helpers;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace PiManagment.Pages
 {
     public class DLNAModel : PageModel
     {
+        private bool isWind = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        private static DLNA _data;
+        private static List<Pair> _toDelete = new List<Pair>();
+        private static List<string> _toAdd = new List<string>();
+        private static List<Pair> _oldLines;
+
+        [BindProperty]
+        public DLNA Data { get; set; }
+
         public void OnGet()
         {
             //var lineID = 0;
@@ -53,11 +63,11 @@ namespace PiManagment.Pages
                    new Pair  ()
                 }
             };
+
+            _data = new DLNA(Data);
         }
 
-        [BindProperty]
-        public DLNA Data { get; set; }
-        
+
 
         public IActionResult OnPostADelete(int id)
         {
@@ -65,109 +75,121 @@ namespace PiManagment.Pages
             {
                 return Page();
             }
+            _toDelete.Add(_data.AudioPaths.First(x => x.ID == id));
+            _data.AudioPaths.Remove(_data.AudioPaths.First(x => x.ID == id));
+            _data.AudioPaths.Last().Value = "";
 
-            Data.AudioPaths.Remove(Data.AudioPaths.First(x => x.ID == id));
+
+            Data = new DLNA(_data);
             return Page();
         }
-
         public IActionResult OnPostVDelete(int id)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
+            _toDelete.Add(_data.VideoPaths.First(x => x.ID == id));
+            _data.VideoPaths.Remove(_data.VideoPaths.First(x => x.ID == id));
+            _data.VideoPaths.Last().Value = "";
 
-            Data.VideoPaths.Remove(Data.VideoPaths.First(x => x.ID == id));
+
+            Data = new DLNA(_data);
             return Page();
         }
-
-        public IActionResult OnPostPDelete(int id, DLNA data)
+        public IActionResult OnPostPDelete(int id)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            Data.PhotosPaths.Remove(Data.PhotosPaths.First(x => x.ID == id));
-            Data.PhotosPaths.Last().Value = "";
+            _toDelete.Add(_data.PhotosPaths.First(x => x.ID == id));
+            _data.PhotosPaths.Remove(_data.PhotosPaths.First(x => x.ID == id));
+            _data.PhotosPaths.Last().Value = "";
+
+
+            Data = new DLNA(_data);
             return Page();
         }
 
-        public IActionResult OnPostAddA(DLNA data)
+        public IActionResult OnPostAddA()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            if (!String.IsNullOrEmpty(data.AudioPaths.Last().Value))
+            if (!String.IsNullOrEmpty(Data.AudioPaths.Last().Value))
             {
-                Data.AudioPaths.Last().ID = data.AudioPaths.Count;
-                Data.AudioPaths.Add(new Pair());
+                _data.AudioPaths.Last().ID = Data.AudioPaths.Count;
+                _data.AudioPaths.Last().Value = Data.AudioPaths.Last().Value;
+                _data.AudioPaths.Add(new Pair());
+                _toAdd.Add($"mkdir = A,{_data.AudioPaths.Last()}");
+
             }
-            
 
-            //"sudo minidlna -R".Bash();
-            //"sudo service minidlnad restart".Bash()
-
+            Data = new DLNA(_data);
             return Page();
-            //return RedirectToPage("./Reset");
         }
-
-        public IActionResult OnPostAddP(DLNA data)
+        public IActionResult OnPostAddP()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-            if (!String.IsNullOrEmpty(data.PhotosPaths.Last().Value))
+            if (!String.IsNullOrEmpty(Data.VideoPaths.Last().Value))
             {
-                Data.PhotosPaths.Last().ID = data.PhotosPaths.Count;
-                Data.PhotosPaths.Add(new Pair());
+                _data.PhotosPaths.Last().ID = Data.PhotosPaths.Count;
+                _data.PhotosPaths.Last().Value = Data.PhotosPaths.Last().Value;
+                _data.PhotosPaths.Add(new Pair());
+                _toAdd.Add($"mkdir = A,{_data.PhotosPaths.Last()}");
             }
-            
 
-
+            Data = new DLNA(_data);
             return Page();
         }
-
-
-        public IActionResult OnPostAddV(DLNA data)
+        public IActionResult OnPostAddV()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-            if (!String.IsNullOrEmpty(data.VideoPaths.Last().Value))
+            if (!String.IsNullOrEmpty(Data.VideoPaths.Last().Value))
             {
-                Data.VideoPaths.Last().ID = data.VideoPaths.Count;
-                Data.VideoPaths.Add(new Pair());
+                _data.VideoPaths.Last().ID = Data.VideoPaths.Count;
+                _data.VideoPaths.Last().Value = Data.VideoPaths.Last().Value;
+                _data.VideoPaths.Add(new Pair());
+                _toAdd.Add($"mkdir = A,{_data.VideoPaths.Last()}");
+                
             }
 
+            Data = new DLNA(_data);
             return Page();
         }
-
+        
         public IActionResult OnPostSaveDLNAConf()
         {
+            if (!isWind)
+            {
+                _oldLines.RemoveAll(x => _toDelete.Any(y => y.ID == x.ID));
+
+                var clearLines = _oldLines.Select(x => x.Value).ToList();
+                clearLines.AddRange(_toAdd);
+                var builder = new StringBuilder();
+                builder.AppendJoin("\r\n", clearLines);
+                builder.ToString();
+                $"echo {builder.ToString()} > /etc/minidlna.conf".Bash();
+
+                "sudo minidlna -R".Bash();
+                "sudo service minidlnad restart".Bash();
+
+                _toAdd.Clear();
+                _toDelete.Clear();
+            }
 
 
-            //var confFIle = "cat /etc/minidlna.conf".Bash();
-            //var lineID = 0;
-            //var lines = confFIle.Split("\r\n").Select(value => (++lineID, value));
-            //var linesList = lines.ToList();
-
-            //linesList.RemoveAll(x => Data.AudioPaths.Any(y => y.ID == x.Item1) ||
-            //                         Data.PhotosPaths.Any(y => y.ID == x.Item1) ||
-            //                         Data.VideoPaths.Any(y => y.ID == x.Item1));
-            //var clearLines = linesList.Select(x => x.Item1).ToList();
-            //var builder = new StringBuilder();
-            //builder.AppendJoin("\r\n", clearLines);
-            //builder.ToString();
-            //$"echo {builder.ToString()} > /etc/minidlna.conf".Bash();
-
-            //"sudo minidlna -R".Bash();
-            //"sudo service minidlnad restart".Bash();
-
+            Data = new DLNA(_data);
             return Page();
         }
 

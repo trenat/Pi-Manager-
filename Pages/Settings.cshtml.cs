@@ -100,7 +100,7 @@ namespace PiManagment.Pages
                 var newlines = lines.ToList();
 
                 StringBuilder s = new StringBuilder();
-                if (data.UseDHCP)
+                if (!data.UseDHCP)
                 {
                     newlines.RemoveAll(x => lanCard.Any(y => y.x == x));
 
