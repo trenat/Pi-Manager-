@@ -14,12 +14,25 @@ namespace PiManagment
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            //BuildWebHost(args).Run();
+
+            var host = new WebHostBuilder()
+            .UseKestrel()
+            .UseUrls("http://*:8000")
+            .UseIISIntegration()
+            .ConfigureLogging(loggerFactory => loggerFactory
+                .AddConsole()
+                .AddDebug())
+            .UseStartup<Startup>()
+            .Build();
+
+            host.Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseUrls("http://0.0.0.0:4999") // Take that, Docker port forwarding!!!
                 .Build();
     }
 }
